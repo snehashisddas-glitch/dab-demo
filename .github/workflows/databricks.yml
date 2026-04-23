@@ -10,25 +10,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout code from GitHub
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Step 2: Install latest Databricks CLI
       - name: Install Databricks CLI
         run: |
           curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
 
-      - name: Configure Databricks CLI
-        run: |
-          databricks configure --host $DATABRICKS_HOST --token $DATABRICKS_TOKEN
+      # Step 3: Validate bundle
+      - name: Validate bundle
+        run: databricks bundle validate
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
 
-      - name: Validate bundle
-        run: databricks bundle validate
-
+      # Step 4: Deploy bundle
       - name: Deploy bundle
         run: databricks bundle deploy
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
 
+      # Step 5: Run pipeline job
       - name: Run pipeline
         run: databricks bundle run pipeline-job
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
