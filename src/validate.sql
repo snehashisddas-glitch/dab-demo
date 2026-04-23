@@ -1,0 +1,1 @@
+SELECT * FROM snehashis_transform LIMIT 10;

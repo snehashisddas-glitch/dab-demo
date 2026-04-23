@@ -1,0 +1,21 @@
+bundle:
+  name: dab-demo
+
+targets:
+  dev:
+    workspace:
+      host: https://dbc-bbdbbd29-8924.cloud.databricks.com
+
+resources:
+  jobs:
+    my-job:
+      name: my-dab-job
+
+      tasks:
+        - task_key: task1
+
+          sql_task:
+            file:
+              path: ./src/job.sql
+
+            warehouse_id: e19011546a1083a6
